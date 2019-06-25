@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/jquery-weather.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/sweetalert.css">
+
+
+
+</head>
+<body>
+
+<!--导航栏-->
+<nav class="nav navbar-default" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand"><span class="glyphicon glyphicon-book"></span> 旅行预算系统</a>
+
+    </div>
+    <ul class="nav navbar-nav pull-right">
+        <li><a id="name"><span class="glyphicon glyphicon-user "></span></a></li>
+        <li><a href="login.html"><span class="glyphicon glyphicon-log-out"></span> 退出</a></li>
+    </ul>
+</nav>
+<div class="wrap" id="wrapper">
+    <div class="row">
+        <div class="col-sm-3" id="history">
+            <h4>历史</h4>
+            <hr>
+            <div class="toggle ">历史→</div>
+        </div>
+        <div id="weather" class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <h2>记录预算</h2>
+            <hr>
+            <form id="form" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="control-label col-sm-2">名称</label>
+                    <div class="col-sm-4">
+                        <input name="name" class="form-control" required/>
+                    </div>
+                    <label class="control-label col-sm-2">金额</label>
+                    <div class="col-sm-3">
+                        <input name="money" class="form-control" required/>
+                    </div>
+                    <label class="control-label col-sm-1">元</label>
+                </div>
+            </form>
+            <button id="add" onclick="addItem()" class="btn btn-info col-sm-offset-6">&nbsp;<span
+                    class="glyphicon glyphicon-plus"></span>&nbsp;</button>
+            <hr>
+            <button id="save" onclick="save()" class="btn btn-info col-sm-offset-6">保存</button>
+        </div>
+
+
+    </div>
+</div>
+
+<script src="js/jquery-3.3.1.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery-weather.js"></script>
+<script src="js/validate/jquery.validate.min.js"></script>
+<script src="js/validate/messages_zh.min.js"></script>
+<script src="js/url.js"></script>
+<script src="js/index.js"></script>
+<script src="js/sweetalert.min.js"></script>
+</body>
+<script>
+</script>
+</html>

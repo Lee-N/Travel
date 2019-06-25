@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>接口集合</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+</head>
+<style>
+    .wrap{
+        margin-top: 50px;
+    }
+    #result{
+        margin-left: 40px;
+        width: 50%;
+        height: 200px;
+    }
+    .result{
+    }
+    .result button{
+        margin-left: 20px;
+        margin-bottom: 200px;
+    }
+
+</style>
+<body>
+<div class="wrap">
+    <div class="container">
+        <div class="row">
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="control-label col-sm-3">天气</label>
+                    <div class="col-sm-6 " >
+                        <input class="form-control" id="city" placeholder="输入查询城市...">
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-primary" id="weather" onclick="getWeather()">查询</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">号码归属地</label>
+                    <div class="col-sm-6" >
+                        <input  class="form-control" id="number" placeholder="输入手机号码...">
+                    </div>
+                    <div class="col-sm-2">
+                        <button  type="button" class="btn btn-primary" id="phonePlace" onclick="phone()">查询</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">邮政编码查询</label>
+                    <div class="col-sm-6" >
+                        <input class="form-control" id="place" placeholder="输入查询城市...">
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-primary" id="postalCode" onclick="getPostalcode()">查询</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">火车时刻表查询</label>
+                    <div class="row">
+                        <div class="col-sm-2 " >
+                            <input class="form-control" id="start" placeholder="输入起始城市...">
+                        </div>
+                        <div class="col-sm-2" >
+                            <input class="form-control" id="end" placeholder="输入目的城市...">
+                        </div>
+                        <div class="col-sm-2 " >
+                            <input class="form-control" id="date" type="date" placeholder="选择日期...">
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary" id="train" onclick="getTrain()">查询</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+        <div class="row result" align="center" >
+            <h3>查询结果</h3>
+            <textarea id="result"></textarea>
+            <button type="button" class="btn btn-primary" onclick="clearResult()" >清空</button>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="js/jquery-3.3.1.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</body>
+
+<script>
+    $(function () {
+
+    })
+
+    function getWeather() {
+        let city=$("#city").val();
+        if(city==""){alert("输入不能为空")}
+        else {
+            $.ajax({
+                url:"http://localhost:8080/TravelService/MainServlet",
+                dataType:"json",
+                data:{
+                    method:"weather",
+                    city:city,
+                },
+                success:function (data) {
+                    let html=`${data.city}七天天气\n`;
+                    for(let i=0;i<data.data.length;i++){
+                        html+=`${data.data[i].date}  ${data.data[i].week}  ${data.data[i].wea}  ${data.data[i].tem1}~${data.data[i].tem2}  ${data.data[i].win_speed}\n`;
+                    }
+                    $("#result").append(html)
+                }
+            })
+        }
+    }
+    
+    function phone() {
+        let number=$("#number").val();
+        if(number==""){alert("输入不能为空")}
+        else {
+            $.ajax({
+                url:"http://localhost:8080/TravelService/MainServlet",
+                dataType:"json",
+                data:{
+                    method:"place",
+                   number:number
+                },
+                success:function (data) {
+                    let html=`手机号码:${number}  号码归属地:${data.response[number].location}\n`
+                    $("#result").append(html)
+                }
+            })
+        }
+    }
+    
+    
+    function getPostalcode() {
+        let place=$("#place").val();
+        if(place==""){alert("输入不能为空")}
+        else {
+            $.ajax({
+                url:"http://localhost:8080/TravelService/MainServlet",
+                dataType:"json",
+                data:{
+                    method:"postalcode",
+                    place:place
+                },
+                success:function (data) {
+                    let html=`位置:${place}  邮政编码:${data.result[0].zipcode}\n`
+                    $("#result").append(html)
+                }
+            })
+        }
+    }
+    
+    function getTrain() {
+        let start=$("#start").val();
+        let end=$("#end").val();
+        let date=$("#date").val();
+        if(start==""||end==""||date==""){alert("输入不能为空")}
+        else {
+            $.ajax({
+                url: "http://localhost:8080/TravelService/MainServlet",
+                dataType: "json",
+                data: {
+                    method: "train",
+                    start: start,
+                    end: end,
+                    date: date
+                },
+                success: function (data) {
+                    let html = `时间:${date}  起始:${start}  目的地:${end}\n`;
+                    for (let i = 0; i < data.result.list.length; i++) {
+                        html += `车号:${data.result.list[i].trainno}  发车时间:${data.result.list[i].departuretime}  到达时间:${data.result.list[i].arrivaltime}\n`
+                    }
+                    $("#result").append(html)
+                }
+            })
+        }
+    }
+
+
+    function clearResult() {
+        $("#result").empty();
+    }
+</script>
+</html>
